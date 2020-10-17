@@ -3,10 +3,12 @@ package com.deserve.app.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 public class Journey {
   private Station source;
-  private Station destination;
+  private Optional<Station> destination;
   private JourneyType journeyType;
 }
