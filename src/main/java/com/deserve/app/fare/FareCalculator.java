@@ -1,4 +1,4 @@
-package com.deserve.app;
+package com.deserve.app.fare;
 
 import com.deserve.app.model.Journey;
 
