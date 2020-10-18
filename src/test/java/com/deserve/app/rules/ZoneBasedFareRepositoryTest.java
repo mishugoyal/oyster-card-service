@@ -71,7 +71,17 @@ class ZoneBasedFareRepositoryTest {
   }
 
   @Test
-  void shouldThrowExceptionIfEitherOfTheZonesIsNotFoundInRepository() {
+  void shouldReturnEmptyIfEitherOfTheZonesIsNotFoundInRepository() {
     assertEquals(Optional.empty(), zoneBasedFareRepository.getFare(1, 4, JourneyType.TUBE));
+  }
+
+  @Test
+  void shouldReturnDefaultFareForBusJourneyType() {
+    assertEquals(1.80, zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.BUS), 0);
+  }
+
+  @Test
+  void shouldReturnDefaultFareForTubeJourneyType() {
+    assertEquals(3.20, zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.TUBE), 0);
   }
 }
