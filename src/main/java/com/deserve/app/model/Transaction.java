@@ -10,5 +10,9 @@ import java.util.Optional;
 public class Transaction {
   private TransactionType transactionType;
   private double amount;
-  private Optional<Journey> journey;
+  private Journey journey = null;
+
+  public Optional<Journey> getJourney() {
+    return Optional.ofNullable(journey);
+  }
 }

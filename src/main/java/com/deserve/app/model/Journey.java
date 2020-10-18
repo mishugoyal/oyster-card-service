@@ -9,6 +9,10 @@ import java.util.Optional;
 @Setter
 public class Journey {
   private Station source;
-  private Optional<Station> destination;
+  private Station destination = null;
   private JourneyType journeyType;
+
+  public Optional<Station> getDestination() {
+    return Optional.ofNullable(destination);
+  }
 }
