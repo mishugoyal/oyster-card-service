@@ -2,6 +2,8 @@ package com.deserve.app.fare;
 
 import com.deserve.app.model.Journey;
 
+import java.util.Optional;
+
 public interface FareCalculator {
-  double getFare(Journey journey);
+  Optional<Double> getFare(Journey journey);
 }
