@@ -1,7 +1,6 @@
 package com.deserve.app.fare;
 
 import com.deserve.app.model.Journey;
-import com.deserve.app.rules.ZoneBasedFareRepository;
 
 import java.util.Optional;
 

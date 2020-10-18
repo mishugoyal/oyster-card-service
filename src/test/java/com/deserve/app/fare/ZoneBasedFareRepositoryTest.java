@@ -1,5 +1,6 @@
-package com.deserve.app.rules;
+package com.deserve.app.fare;
 
+import com.deserve.app.fare.ZoneBasedFareRepository;
 import com.deserve.app.model.JourneyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

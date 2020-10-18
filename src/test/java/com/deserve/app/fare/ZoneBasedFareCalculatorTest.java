@@ -3,7 +3,6 @@ package com.deserve.app.fare;
 import com.deserve.app.model.Journey;
 import com.deserve.app.model.JourneyType;
 import com.deserve.app.model.Station;
-import com.deserve.app.rules.ZoneBasedFareRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
