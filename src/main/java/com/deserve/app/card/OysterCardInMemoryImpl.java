@@ -1,23 +1,22 @@
 package com.deserve.app.card;
 
 import com.deserve.app.fare.FareCalculator;
-import com.deserve.app.model.Journey;
 import com.deserve.app.model.JourneyType;
 import com.deserve.app.model.Station;
+import com.deserve.app.model.Transaction;
+import com.deserve.app.model.TransactionType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OysterCardInMemoryImpl implements OysterCard {
   private double balance;
+  private final List<Transaction> transactions;
   private final FareCalculator fareCalculator;
 
   public OysterCardInMemoryImpl(FareCalculator fareCalculator) {
     balance = 0;
-    this.fareCalculator = fareCalculator;
-  }
-
-  public OysterCardInMemoryImpl(FareCalculator fareCalculator, double balance) {
-    this.balance = balance;
+    transactions = new ArrayList<>();
     this.fareCalculator = fareCalculator;
   }
 
@@ -39,11 +38,19 @@ public class OysterCardInMemoryImpl implements OysterCard {
   @Override
   public double addBalance(double amount) {
     this.balance += amount;
+    transactions.add(getAddBalanceTransaction(amount));
     return this.balance;
   }
 
   @Override
-  public List<Journey> getTransactions() {
-    return null;
+  public List<Transaction> getTransactions() {
+    return transactions;
+  }
+
+  private Transaction getAddBalanceTransaction(double amount) {
+    Transaction transaction = new Transaction();
+    transaction.setAmount(amount);
+    transaction.setTransactionType(TransactionType.CREDIT);
+    return transaction;
   }
 }
