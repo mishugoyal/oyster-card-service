@@ -11,13 +11,19 @@ public class ZoneBasedFareRepository {
 
   public ZoneBasedFareRepository() {
     fareRuleMap = new HashMap<>();
+    initializeMap();
   }
+
+  private void initializeMap() {}
 
   public Optional<Double> getFare(int fromZone, int toZone, JourneyType journeyType) {
     return Optional.empty();
   }
 
   public double getDefaultFareForJourneyType(JourneyType journeyType) {
-    return 0;
+    if (JourneyType.BUS == journeyType) {
+      return 1.80;
+    }
+    return 3.20;
   }
 }
