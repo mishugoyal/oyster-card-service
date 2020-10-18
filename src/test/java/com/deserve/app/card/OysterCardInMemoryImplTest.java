@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ class OysterCardInMemoryImplTest {
 
   @Test
   void shouldReturnFalseForInvalidSwipeIn() {
-    Station station = getStation("Chelsea", Collections.singletonList(4));
+    Station station = getStation("SomeStation", Collections.singletonList(4));
     when(zoneBasedFareCalculator.getFare(any(Journey.class))).thenReturn(Optional.empty());
     oysterCard.addBalance(10);
 
@@ -104,6 +105,75 @@ class OysterCardInMemoryImplTest {
     assertEquals("Chelsea", lastTransaction.getJourney().get().getSource().getName());
     assertEquals(Optional.empty(), lastTransaction.getJourney().get().getDestination());
     assertEquals(JourneyType.TUBE, lastTransaction.getJourney().get().getJourneyType());
+  }
+
+  @Test
+  void shouldReturnFalseWhenSwipeOutIsInvokedWithoutSwipeInFirst() {
+    Station station = getStation("Holborn", Arrays.asList(1, 2));
+
+    assertFalse(oysterCard.swipeOut(station));
+  }
+
+  @Test
+  void shouldReturnFalseWhenSwipeOutIsInvokedWithInvalidStation() {
+    Station source = getStation("Holborn", Arrays.asList(1, 2));
+    Station destination = getStation("SomeStation", Collections.singletonList(4));
+    when(zoneBasedFareCalculator.getFare(any(Journey.class))).thenReturn(Optional.of(3.20)).thenReturn(Optional.empty());
+    oysterCard.addBalance(10);
+    oysterCard.swipeIn(source, JourneyType.TUBE);
+
+    assertFalse(oysterCard.swipeOut(destination));
+  }
+
+  @Test
+  void shouldReturnTrueWhenSwipeOutIsInvokedAfterSwipeIn() {
+    Station source = getStation("Holborn", Arrays.asList(1, 2));
+    Station destination = getStation("Wimbledon", Collections.singletonList(3));
+    when(zoneBasedFareCalculator.getFare(any(Journey.class))).thenReturn(Optional.of(3.20));
+    oysterCard.addBalance(10);
+    oysterCard.swipeIn(source, JourneyType.TUBE);
+
+    assertTrue(oysterCard.swipeOut(destination));
+  }
+
+  @Test
+  void shouldUpdateTheBalanceAndDestinationOfLastTransactionWhenSwipeOutIsInvoked() {
+    Station source = getStation("Holborn", Arrays.asList(1, 2));
+    Station destination = getStation("Wimbledon", Collections.singletonList(3));
+    when(zoneBasedFareCalculator.getFare(any(Journey.class)))
+        .thenReturn(Optional.of(3.20))
+        .thenReturn(Optional.of(2.20));
+    oysterCard.addBalance(10);
+    oysterCard.swipeIn(source, JourneyType.TUBE);
+
+    final List<Transaction> transactions = oysterCard.getTransactions();
+    final Transaction lastTransaction = transactions.get(transactions.size() - 1);
+    assertEquals(3.20, lastTransaction.getAmount());
+    assertEquals(Optional.empty(), lastTransaction.getJourney().get().getDestination());
+
+    oysterCard.swipeOut(destination);
+
+    assertEquals(2.20, lastTransaction.getAmount());
+    assertEquals("Holborn", lastTransaction.getJourney().get().getSource().getName());
+    assertEquals("Wimbledon", lastTransaction.getJourney().get().getDestination().get().getName());
+    assertEquals(JourneyType.TUBE, lastTransaction.getJourney().get().getJourneyType());
+  }
+
+  @Test
+  void shouldUpdateCurrBalanceWhenSwipeOutIsInvoked() {
+    Station source = getStation("Holborn", Arrays.asList(1, 2));
+    Station destination = getStation("Wimbledon", Collections.singletonList(3));
+    when(zoneBasedFareCalculator.getFare(any(Journey.class)))
+        .thenReturn(Optional.of(3.20))
+        .thenReturn(Optional.of(2.20));
+    oysterCard.addBalance(10);
+    oysterCard.swipeIn(source, JourneyType.TUBE);
+
+    assertEquals(6.80, oysterCard.getBalance());
+
+    oysterCard.swipeOut(destination);
+
+    assertEquals(7.80, oysterCard.getBalance());
   }
 
   private Station getStation(String name, List<Integer> zones) {
