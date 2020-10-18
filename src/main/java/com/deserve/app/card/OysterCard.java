@@ -13,7 +13,7 @@ public interface OysterCard {
 
   double getBalance();
 
-  boolean addBalance(double amount);
+  double addBalance(double amount);
 
   List<Journey> getTransactions();
 }

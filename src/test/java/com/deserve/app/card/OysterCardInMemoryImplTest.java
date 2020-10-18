@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class OysterCardInMemoryImplTest {
@@ -22,13 +21,11 @@ class OysterCardInMemoryImplTest {
 
   @Test
   void shouldAddBalanceToCardWhenAddBalanceIsInvoked() {
-    assertTrue(oysterCard.addBalance(30));
-    assertEquals(30, oysterCard.getBalance());
+    assertEquals(30, oysterCard.addBalance(30));
   }
 
-
-	@Test
-	void shouldReturnBalanceWhenGetBalanceIsInvoked() {
-		assertEquals(0, oysterCard.getBalance());
-	}
+  @Test
+  void shouldReturnBalanceWhenGetBalanceIsInvoked() {
+    assertEquals(0, oysterCard.getBalance());
+  }
 }

@@ -33,12 +33,13 @@ public class OysterCardInMemoryImpl implements OysterCard {
 
   @Override
   public double getBalance() {
-    return 0;
+    return this.balance;
   }
 
   @Override
-  public boolean addBalance(double amount) {
-    return false;
+  public double addBalance(double amount) {
+    this.balance += amount;
+    return this.balance;
   }
 
   @Override
