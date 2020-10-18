@@ -77,11 +77,13 @@ class ZoneBasedFareRepositoryTest {
 
   @Test
   void shouldReturnDefaultFareForBusJourneyType() {
-    assertEquals(1.80, zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.BUS), 0);
+    assertEquals(
+        Optional.of(1.80), zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.BUS));
   }
 
   @Test
   void shouldReturnDefaultFareForTubeJourneyType() {
-    assertEquals(3.20, zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.TUBE), 0);
+    assertEquals(
+        Optional.of(3.20), zoneBasedFareRepository.getDefaultFareForJourneyType(JourneyType.TUBE));
   }
 }
